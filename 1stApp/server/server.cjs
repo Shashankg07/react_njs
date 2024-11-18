@@ -5,6 +5,7 @@ const app = express();
 
 app.use(cors());
 
+// Endpoint to fetch list of restaurants
 app.get('/api/restaurants', async (req, res) => {
   try {
     const response = await axios.get(
@@ -16,14 +17,34 @@ app.get('/api/restaurants', async (req, res) => {
         }
       }
     );
-    res.json(response.data);
+    res.json(response.data); // Send back the data from the external API
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 });
 
-const PORT = process.env.PORT || 3001;
+// Endpoint to fetch menu for a specific restaurant by ID
+app.get('/api/restaurantsMenu/:resId', async (req, res) => {  // Changed restaurantId to resId
+  const { resId } = req.params; // Use resId instead of restaurantId
+  try {
+    const response = await axios.get(
+      `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=26.95250&lng=75.71050&restaurantId=`+ resId +`&catalog_qa=undefined&submitAction=ENTER`,
+      {
+        headers: {
+          'User-Agent': 'Mozilla/5.0',
+          'Accept': 'application/json',
+        }
+      }
+    );
+    res.json(response.data); // Send back the menu data
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to fetch menu' });
+  }
+});
+
+const PORT = process.env.PORT || 3001; // Port for the Express server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
