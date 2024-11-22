@@ -17,6 +17,12 @@ const AppLayout = () => {
   );
 };
 
+//chunking
+// Code Splitting
+// Dynamic Bundling
+// lazy loading
+// on demand loading
+// dynamic import
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const appRouter = createBrowserRouter([

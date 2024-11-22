@@ -4,22 +4,15 @@ import Shimmer from "./Shimmer"; // Assume Shimmer is a loading placeholder comp
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 
 const RestaurantMenu = () => {
-  const { resId } = useParams(); // Get restaurant ID from the URL
-  // const [menuData, setMenuData] = useState(null); // To store menu data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const { resId } = useParams();
 
-
-  // Fetch menu data when component mounts or resId changes
   const menuData = useRestaurantMenu(resId);
-  
 
-  if (loading) return <Shimmer />; // Show Shimmer while loading
-  if (error) return <div>{error}</div>; // Show error if fetching fails
+  if (menuData === null) return <Shimmer />;
 
-  // Destructure restaurant info from the menu data
   const { name, cuisines, costForTwoMessage } =
     menuData?.cards?.[2]?.card?.card?.info || {};
+  
   const { carousel } =
     menuData?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
       ?.card || {};
