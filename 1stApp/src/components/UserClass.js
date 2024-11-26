@@ -1,5 +1,6 @@
 import React from "react";
 import { LOGO_URL } from "../utils/constants";
+import UserContext from "../utils/UserContext";
 
 class UserClass extends React.Component {
   constructor(props) {
@@ -9,8 +10,8 @@ class UserClass extends React.Component {
       userInfo: {
         login: "Dummy",
         id: "Default",
-        avatar_url: ":)"
-      }
+        avatar_url: ":)",
+      },
     };
   }
 
@@ -21,7 +22,6 @@ class UserClass extends React.Component {
       userInfo: json,
     });
     console.log(json);
-    
 
     // console.log("component did mount");
   }
@@ -30,11 +30,23 @@ class UserClass extends React.Component {
     // console.log("render")
     const { login, id, avatar_url } = this.state.userInfo;
     return (
-      <div className="user-card">
-        <img src={avatar_url} />
-        <h2>Name: {login}</h2>
-        <h3>Location: {id}</h3>
-        <h4>Contact: @shashankg07</h4>
+      <div className="flex">
+        <div className="w-2/12">
+          <img src={avatar_url} />
+        </div>
+        <div className="w-10/12 px-4">
+          <div>
+            LoggedIn User
+            <UserContext.Consumer>
+              {({ loggedInUser }) => (
+                <h1 className="text-xl font-bold">{loggedInUser}</h1>
+              )}
+            </UserContext.Consumer>
+          </div>
+          <h2>Name: {login}</h2>
+          <h3>Location: {id}</h3>
+          <h4>Contact: @shashankg07</h4>
+        </div>
       </div>
     );
   }
